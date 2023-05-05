@@ -21,6 +21,9 @@ public class Model {
 
     }
 
+    public Model(){
+    }
+
     public String getNombres() {
         return Nombres;
     }

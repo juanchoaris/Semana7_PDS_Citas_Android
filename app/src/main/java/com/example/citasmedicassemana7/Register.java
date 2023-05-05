@@ -35,22 +35,41 @@ public class Register extends AppCompatActivity {
         EditText txtDocumento = findViewById(R.id.txtDocumento);
         EditText txtCorreo = findViewById(R.id.txtCorreo);
         EditText txtFecha = findViewById(R.id.txtFecha);
-        Button btnGuardar =findViewById(R.id.btnGuardar);
+        Button btnGuardar = findViewById(R.id.btnGuardar);
+        Button btnRegresar2 = findViewById(R.id.btnRegresar2);
 
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String Cita = txtNombres.getText().toString() + " | "  + txtApellidos.getText().toString() + " | "  +
-                              txtDocumento.getText().toString() + " | " + txtCorreo.getText().toString() + " | "  +
-                              spinner.getSelectedItem().toString() + " | "  + txtFecha.getText().toString();
+                Model Cita = new Model();
+                Cita.setNombres(txtNombres.getText().toString());
+                Cita.setApellidos(txtApellidos.getText().toString());
+                Cita.setDocumento(txtDocumento.getText().toString());
+                Cita.setCorreo(txtCorreo.getText().toString());
+                Cita.setEspecialidad(spinner.getSelectedItem().toString());
+                Cita.setFecha(txtFecha.getText().toString());
 
-                ListaCitas.add(Cita);
-                Toast.makeText(Register.this, "Registro creado exitosamente!!!", Toast.LENGTH_LONG).show();
+                Database_administrator database_administrator = new Database_administrator();
+                database_administrator.connectSQL();
+                boolean insertConfirm = database_administrator.insertRecord(Cita);
 
-                Intent inten_consul= new Intent(Register.this, Consult.class);
-                inten_consul.putExtra("ListaCitas", ListaCitas);
+                if (insertConfirm) {
+                    Toast.makeText(Register.this, "Registro creado exitosamente!!!", Toast.LENGTH_LONG).show();
+
+                    Intent inten_consul = new Intent(Register.this, Consult.class);
+                    startActivity(inten_consul);
+                }
+            }
+        });
+
+        btnRegresar2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent inten_consul = new Intent(Register.this, MainActivity.class);
                 startActivity(inten_consul);
+
             }
         });
     }
